@@ -394,7 +394,7 @@ class EMC():
             self._sym_friedel()
 
             if self.need_scaling and self.model.ndim == 4:
-                mscale = float(self.scales.sum()) / (self.dset.num_data - self.num_blacklist)
+                mscale = float(self.scales.sum()) / float(self.dset.num_data - self.num_blacklist)
                 self.scales /= mscale
                 self.model *= mscale
 
