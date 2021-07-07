@@ -15,7 +15,7 @@ import cupy as cp
 
 from cupadman import CDetector, CDataset, Quaternion
 P_MIN = 1.e-6
-MEM_THRESH = 0.4
+MEM_THRESH = 0.8
 
 class EMC():
     '''Reconstructor object using parameters from config file
@@ -205,7 +205,10 @@ class EMC():
         block_sizes = np.array([self.dset.num_data // num_blocks] * num_blocks)
         block_sizes[0:self.dset.num_data % num_blocks] += 1
         if len(block_sizes) > 1:
-            self._log_print('\t%d blocks with %d-%d frames in each block' % (len(block_sizes), block_sizes.min(), block_sizes.max()))
+            block_str = '%d' % block_sizes.min()
+            if blocks_sizes.max() != blocks_sizes.min():
+                block_str += '-%d' % block_sizes.max()
+            self._log_print('\t%d blocks with %s frames in each block' % (len(block_sizes), block_str))
 
         if self.prob.shape != (self.quat.num_rot_p, block_sizes.max()):
             self.prob = cp.empty((self.quat.num_rot_p, block_sizes.max()), dtype='f8')
