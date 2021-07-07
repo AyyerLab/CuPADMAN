@@ -13,13 +13,11 @@ hdf5_libs = [[s for s in out.split() if s[:2] == '-L'][0], '-lhdf5']
 
 mpi_cflags = subprocess.getoutput('mpicc --showme:compile').strip().split()
 mpi_libs = subprocess.getoutput('mpicc --showme:link').strip().split()
-gsl_cflags = subprocess.getoutput('gsl-config --cflags').strip().split()
-gsl_libs = subprocess.getoutput('gsl-config --libs').strip().split()
 
 compile_args = '-fopenmp -O3 -Wall'.split()
 compile_args += '-Wno-cpp -Wno-unused-result -Wno-unused-function -Wno-format-overflow'.split() 
-compile_args += hdf5_cflags + gsl_cflags + ['-I'+np.get_include()]
-link_args = '-lm -fopenmp'.split() + hdf5_libs + gsl_libs
+compile_args += hdf5_cflags + ['-I'+np.get_include()]
+link_args = '-lm -fopenmp'.split() + hdf5_libs
 
 # TODO: Fix undefined symbol problem requiring two rounds of compilation
 ext_modules = [
